@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Excluir archivos de retorno de MercadoPago
+RewriteCond %{REQUEST_URI} !^/kubik/public/success\.php$
+RewriteCond %{REQUEST_URI} !^/kubik/public/failure\.php$
+RewriteCond %{REQUEST_URI} !^/kubik/public/pending\.php$
+
+# Redirigir todo lo demás al index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
