@@ -15,7 +15,8 @@ $container = $containerBuilder->build();
 
 AppFactory::setContainer($container);
 $app = AppFactory::create();
-
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
 
 $app->addRoutingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);

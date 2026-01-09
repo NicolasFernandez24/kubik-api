@@ -14,11 +14,11 @@ return function (App $app) {
     $app->delete('/usuarios/{id}', [UsuarioController::class, 'delete']);
 
     // Rutas de salas
-    $app->get('/salas', [SalasController::class, 'GetAllSalas']);
-    $app->get('/salas/{id}', [SalasController::class, 'getSalasById']);
-    $app->post('/salas', [SalasController::class, 'createSala']);
-    $app->post('/salas/{id}', [SalasController::class, 'updateSala']);
-    $app->delete('/salas/{id}', [SalasController::class, 'deleteSala']);
+    $app->get('/salas', [SalasController::class, 'GetAll']);
+    $app->get('/salas/{id}', [SalasController::class, 'getById']);
+    $app->post('/salas', [SalasController::class, 'create']);
+    $app->post('/salas/{id}', [SalasController::class, 'update']);
+    $app->delete('/salas/{id}', [SalasController::class, 'delete']);
 
     // Rutas de reservas
     $app->get('/reservas', [ReservasController::class, 'getAll']);

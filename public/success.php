@@ -1,19 +1,39 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-// Parámetros que devuelve MercadoPago
-$status = $_GET['status'] ?? null;
-$external_ref = $_GET['external_reference'] ?? null;
+use Dotenv\Dotenv;
 
-if ($status === 'approved' && $external_ref) {
-    // Decodificar los datos de la reserva
-    $reservaData = json_decode($external_ref, true);
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
+$frontendUrl = $_ENV['FRONTEND_URL'] ?? 'http://localhost:4200';
+
+$status = $_GET['status'] ?? null;
+$externalRef = $_GET['external_reference'] ?? null;
+
+if ($status === 'approved' && $externalRef) {
+
+    // ✅ PASO 1: base64 decode
+    $decoded = base64_decode($externalRef, true);
+
+    if ($decoded === false) {
+        header("Location: {$frontendUrl}/reserva-error");
+        exit;
+    }
+
+    // ✅ PASO 2: json decode
+    $reservaData = json_decode($decoded, true);
+
+    if (!is_array($reservaData)) {
+        header("Location: {$frontendUrl}/reserva-error");
+        exit;
+    }
+
     $reservaJson = urlencode(json_encode($reservaData));
 
-    
-    header("Location: http://localhost:4200/reserva-success?data={$reservaJson}");
-    exit;
-} else {
-    header("Location: http://localhost:4200/reserva-error");
+    header("Location: {$frontendUrl}/reserva-success?data={$reservaJson}");
     exit;
 }
+
+header("Location: {$frontendUrl}/reserva-error");
+exit;
